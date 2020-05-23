@@ -12,25 +12,39 @@
 #
 ##TEMPLATE
 
+#Template used to send logs to central server
 template(name="KYPOTraining" type="string" string="KYPO_BASH_ACTION_AUDIT --- %rawmsg%")
 
+#Loads modules, new and old format 
 module(load="imrelp")
 module(load="omrelp")
 $ModLoad imuxsock
 $ModLoad imklog
+
+#Enables input from client devices over RELP
 input(type="imrelp" port="514" Ruleset="remote")
+
+#Template and ruleset for local log saving
 $template RemoteHost,"/var/log/KYPO/%HOSTNAME%/%$YEAR%/%$MONTH%/%$DAY%/kypolog.log"
 $RuleSet remote
 *.* ?RemoteHost
-# Send messages we receive to Gremlin
+
+
+#Forwards logs to the central server over RELP
 action(type="omrelp" 
 target="{{central_server_address}}" 
 port="514" template="KYPOTraining" 
+
+#Authentication and encryption section
+
 tls="on"
 tls.permittedPeer=["SHA1:{{central_server_certificate_sha}}"]
 tls.myCert="/etc/rsyslog.d/client-cert.pem"
 tls.myPrivKey="/etc/rsyslog.d/client-key.pem"
 tls.authMode="fingerprint"
+
+#Data protection section
+
 queue.type="LinkedList" 
 queue.size="200" #does not support small numbers, more info in documentation
 queue.filename="useraction_queue" 
