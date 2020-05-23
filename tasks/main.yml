@@ -5,20 +5,20 @@
   apt:
     name: rsyslog-relp
 
-- name: "rsysloging server conf"
+- name: "command-monitoring-collector.conf"
   template:
-    src: rsysloging_server.j2
-    dest: /etc/rsyslog.d/server.conf
+    src: command-monitoring-collector.conf.j2
+    dest: /etc/rsyslog.d/command-monitoring-collector.conf
   become: yes
 
 - name: "Copy client-cert for rsyslog"
-  template:
+  copy:
     src: client-cert.pem
     dest: /etc/rsyslog.d/client-cert.pem
   become: yes
 
 - name: "Copy client-key for rsyslog"
-  template:
+  copy:
     src: client-key.pem
     dest: /etc/rsyslog.d/client-key.pem
   become: yes

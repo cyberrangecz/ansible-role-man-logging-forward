@@ -1,38 +1,35 @@
-Role Name
+Command monitoring collector
 =========
 
-A brief description of the role goes here.
+This role configures the device to listen to syslog messages from devices running command-monitoring-client. It also forwards the logs to central server using Reliable Event Logging Protocol (RELP). See the command-monitoring-client role for more information.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+* Rsyslog
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+* `central_server_address` IP address of the central server
+* `central_server_certificate_sha:` SHA hash of the certificate. Must be in this format: "27:7A:EF:69:E2:EF:EE:C0:EA:4C:32:CA:39:CD:91:4D:4C:1D:AB:8C"
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: logger
+      vars:
+          central_server_address: "78.128.251.179" 
+          central_server_certificate_sha: "27:7A:EF:69:E2:EF:EE:C0:EA:4C:32:CA:39:CD:91:4D:4C:1D:AB:8C"
+      become: yes
       roles:
-         - { role: username.rolename, x: 42 }
+        - command-monitoring-collector
 
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+MIT
