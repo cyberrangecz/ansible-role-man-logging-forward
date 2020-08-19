@@ -1,5 +1,6 @@
 ---
-- name: Restart rsyslog
+- name: clc_rsyslog_restart
   service:
-    name: 'rsyslog'
-    state: 'restarted'
+    name: rsyslog
+    state: restarted
+    enabled: yes

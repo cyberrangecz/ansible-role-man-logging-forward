@@ -1,7 +1,17 @@
 ---
 # tasks file for rsysloging-server
+ 
+- name: check existence of required variables
+  fail:
+      msg: required variable '{{ item.key }}' is undefined
+  when: item.value is undefined or not item.value
+  with_dict: '{{ clc_required_vars }}'
 
-- name: Install rsyslog-relp
+- name: Install gnutls plugin for rsyslog
+  apt:
+    name: rsyslog-gnutls
+    
+- name: "Instalation rsyslog relp  (state=present is optional)"
   apt:
     name: rsyslog-relp
 
@@ -9,30 +19,10 @@
   template:
     src: command-monitoring-collector.conf.j2
     dest: /etc/rsyslog.d/command-monitoring-collector.conf
-  become: yes
-
-- name: "Copy client-cert for rsyslog"
-  copy:
-    src: client-cert.pem
-    dest: /etc/rsyslog.d/client-cert.pem
-  become: yes
-
-- name: "Copy client-key for rsyslog"
-  copy:
-    src: client-key.pem
-    dest: /etc/rsyslog.d/client-key.pem
-  become: yes
-
-- name: "Restart rsyslog service"
-  service:
-    name: rsyslog
-    state: restarted
-    enabled: yes
+  notify: clc_rsyslog_restart
 
 - name: Open port on man
   command: iptables -A INPUT -p tcp --dport 514 --jump ACCEPT
-  become: yes
 
 - name: Save iptables
   command: iptables-save
-  become: yes

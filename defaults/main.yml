@@ -1,0 +1,4 @@
+clc_required_vars:
+ clc_syslog_target_host: '{{ clc_syslog_target_host }}'
+
+clc_syslog_target_port: "515"

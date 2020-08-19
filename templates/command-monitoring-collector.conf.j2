@@ -13,13 +13,10 @@
 ##TEMPLATE
 
 #Template used to send logs to central server
-template(name="KYPOTraining" type="string" string="KYPO_BASH_ACTION_AUDIT --- %rawmsg%")
+template(name="KYPOTraining" type="string" string="console.logging KYPO_BASH_ACTION_AUDIT --- %rawmsg%")
 
 #Loads modules, new and old format 
 module(load="imrelp")
-module(load="omrelp")
-$ModLoad imuxsock
-$ModLoad imklog
 
 #Enables input from client devices over RELP
 input(type="imrelp" port="514" Ruleset="remote")
@@ -29,28 +26,9 @@ $template RemoteHost,"/var/log/KYPO/%HOSTNAME%/%$YEAR%/%$MONTH%/%$DAY%/kypolog.l
 $RuleSet remote
 *.* ?RemoteHost
 
-
-#Forwards logs to the central server over RELP
-action(type="omrelp" 
-target="{{central_server_address}}" 
-port="514" template="KYPOTraining" 
-
-#Authentication and encryption section
-
-tls="on"
-tls.permittedPeer=["SHA1:{{central_server_certificate_sha}}"]
-tls.myCert="/etc/rsyslog.d/client-cert.pem"
-tls.myPrivKey="/etc/rsyslog.d/client-key.pem"
-tls.authMode="fingerprint"
-
-#Data protection section
-
-queue.type="LinkedList" 
-queue.size="200" #does not support small numbers, more info in documentation
-queue.filename="useraction_queue" 
-queue.maxdiskspace="10m"
-queue.saveonshutdown="on"
-action.resumeInterval="10"
-action.resumeRetryCount="-1")
-
-stop
+#Forwards logs to the central server over TCP
+action(type="omfwd" 
+       Target="{{ clc_syslog_target_host }}" 
+       Port="{{ clc_syslog_target_port }}" 
+       Template="KYPOTraining" 
+       Protocol="tcp")
