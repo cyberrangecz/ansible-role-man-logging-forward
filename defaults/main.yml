@@ -1,4 +1,4 @@
-clc_required_vars:
- clc_syslog_target_host: '{{ clc_syslog_target_host }}'
+kmlf_required_vars:
+ kmlf_syslog_target_host: '{{ kmlf_syslog_target_host }}'
 
-clc_syslog_target_port: "515"
+kmlf_syslog_target_port: "515"
