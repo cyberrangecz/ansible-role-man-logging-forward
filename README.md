@@ -1,7 +1,13 @@
-Command monitoring collector
+MAN Logging Forwarder
 =========
 
-This role configures the device to listen to syslog messages from devices running command-monitoring-client. It also forwards the logs to central server using TCP. See the command-monitoring-client role for more information.
+This role configures the device to listen to syslog messages from devices running `kypo-sandbox-logging-forward`. It also forwards the logs to `kypo-head` using TCP (using the standard defined in `RFC5424`).
+
+## Authors
+
+Name          | Email          
+------------- | ------------
+Pavel Šeda    |   441048@mail.muni.cz
 
 ## Requirements
 
@@ -15,10 +21,10 @@ This role configures the device to listen to syslog messages from devices runnin
 Role parameters
 --------------
 Mandatory parameters
-* `clc_syslog_target_host` - IP address of the kypo-head server
+* `kmlf_syslog_target_host` - IP address of the syslog server 
 
 Optional parameters
-* `clc_syslog_target_port` - Syslog target port
+* `kmlf_syslog_target_port` - Syslog target port
 
 Example 
 ----------------
@@ -28,10 +34,6 @@ Example
   hosts: man
   become: yes
   roles:
-    - role: command-monitoring-collector
-      clc_syslog_target_host: "{{ kypo_global_head_ip }}"
+    - role: kypo-man-logging-forward
+      kmlf_syslog_target_host: "{{ kypo_global_head_ip }}"
 ```
-License
--------
-
-MIT

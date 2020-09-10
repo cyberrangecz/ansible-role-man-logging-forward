@@ -1,6 +1,6 @@
 galaxy_info:
-  author: Adam Skrasek
-  description: Collects data from clients (command-monitoring-client) and forwards them to the central server using RELP.
+  author: CSIRT Team
+  description: Collects data from clients and forwards them to the central server using TCP.
   company: CSIRT-MU
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
