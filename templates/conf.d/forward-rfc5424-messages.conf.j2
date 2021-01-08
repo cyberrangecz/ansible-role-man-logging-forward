@@ -9,6 +9,10 @@ source s_host {
     );
 };
 
+rewrite r_rewrite_set {
+    set("$FULLHOST_FROM", value(".SDATA.kypo.fromhost_ip"));
+};
+
 # EVENTS log destination
 {% if kmlf_syslog_target_host == "0.0.0.0" %}
 destination d_man_logs {
@@ -22,7 +26,11 @@ destination d_man_logs {
 };
 
 # EVENTS log pairing
-log {source(s_host); destination(d_man_logs);};
+log {
+    source(s_host);
+    rewrite(r_rewrite_set);
+    destination(d_man_logs);
+};
 
 {% else %}
 destination d_kypo_head {
@@ -36,5 +44,9 @@ destination d_kypo_head {
 };
 
 # EVENTS Log pairing
-log {source(s_host); destination(d_kypo_head);};
+log {
+    source(s_host);
+    rewrite(r_rewrite_set);
+    destination(d_kypo_head);
+};
 {% endif %}
