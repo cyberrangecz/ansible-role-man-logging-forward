@@ -1,4 +1,11 @@
 kmlf_required_vars:
- kmlf_syslog_target_host: '{{ kmlf_syslog_target_host }}'
+ kmlf_destination: '{{ kmlf_destination }}'
 
-kmlf_syslog_target_port: "515"
+kmlf_source_ip: 0.0.0.0
+kmlf_source_port: "514"
+kmlf_source_protocol: tcp
+kmlf_source_max_connections: 300
+
+kmlf_destination_port: "515"
+kmlf_destination_protocol: tcp
+
