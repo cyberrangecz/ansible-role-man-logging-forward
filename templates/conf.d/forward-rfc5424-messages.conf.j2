@@ -15,13 +15,13 @@ source s_host {
 };
 
 rewrite r_rewrite_set {
-    set("$FULLHOST_FROM", value(".SDATA.kypo.fromhost_ip"));
+    set("$FULLHOST_FROM", value(".SDATA.crczp.fromhost_ip"));
 };
 
 # EVENTS log destination
 {% if kmlf_destination == "0.0.0.0" %}
 destination d_man_logs {
-    file( 
+    file(
         "/data/idm-logs/man.log"
         create-dirs(yes)
         owner("root")

@@ -1,6 +1,6 @@
 # MAN Logging Forwarder
 
-This role configures the device to listen to syslog messages from devices running `kypo-sandbox-logging-forward`. It also forwards the logs to `kypo-head` using TCP (using the standard defined in `RFC5424`).
+This role configures the device to listen to syslog messages from devices running `sandbox-logging-forward`. It also forwards the logs to `head` using TCP (using the standard defined in `RFC5424`).
 
 ## Requirements
 
@@ -30,6 +30,6 @@ Optional parameters
   hosts: man
   become: yes
   roles:
-    - role: kypo-man-logging-forward
-      kmlf_destination: "{{ kypo_global_head_ip }}"
+    - role: man-logging-forward
+      kmlf_destination: "{{ global_head_ip }}"
 ```
